@@ -31,24 +31,27 @@ class GA(object):
 
 		return error
 
-	def select(self, t):
+	def select_node(self, t):
 		prob = random.random()
 		if prob>=0.75:
 			return t
 		if (t.left is None) and (t.right is None):
 			return None
 		if t.left is not None:
-			return self.select(t.left)
+			return self.select_node(t.left)
 		if t.right is not None:
-			return self.select(t.right)
+			return self.select_node(t.right)
 
 
-	def crossover(self, t1, t2):
-		s1 = self.select(t1)
+	def crossover(self, idx1, idx2):
+		t1, t2 = self.population[idx1], self.population[idx2]
+		s1 = self.select_node(t1)
 		while(s1 is None):
-			s1 = self.select(t1)
-		s2 = self.select(t2)
+			s1 = self.select_node(t1)
+		s2 = self.select_node(t2)
 		while(s2 is None):
-			s2 = self.select(t2)
-		#Not implemented
+			s2 = self.select_node(t2)
+
+		# TODO: Implementar troca de genes entres os cromossomos 
+
 		return s1,s2

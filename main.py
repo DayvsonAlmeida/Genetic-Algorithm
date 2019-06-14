@@ -10,12 +10,10 @@ terminal_symb = ['a','b']
 
 population_size = 2
 ga = GA(terminal_symb=terminal_symb, x=x, y=y, size=population_size)
-t1, t2=ga.population[0], ga.population[1]
-s1, s2 = ga.crossover(t1,t2)
+print('Cromossomo 1')
+ga.population[0].show()
 
-if(s1!=None):
-	print('HEY')
-if(s2!=None):
-	print('Double HEY')
-
-print(s1.type, s2.type)
+print('\nMutation\n')
+ga.mutation(0)
+print('Cromossomo 1')
+ga.population[0].show()

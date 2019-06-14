@@ -3,7 +3,7 @@ import numpy as np
 import random
 import time
 
-def initialize(terminals, primitive_symbol):
+def initialize(terminals, primitive_symbol, up=None):
     #random.seed(time.time())
     type = random.randint(1,4)
     if type == 1:
@@ -22,19 +22,18 @@ def initialize(terminals, primitive_symbol):
     t = SyntaxTree(type, symbol)
     if type == 'constante':
         t.value = value
-        return t
+        t.up = up
     elif type == 'terminal':
-        return t
+        t.up = up
     else:
         if(symbol=='+' or symbol=='-' or symbol=='*' or symbol=='/' or symbol=='^'):
-            l = initialize(terminals, primitive_symbol)
-            l.up = t
-            r = initialize(terminals, primitive_symbol)
-            r.up = t
+            l = initialize(terminals, primitive_symbol, up=t)
+            r = initialize(terminals, primitive_symbol, up=t)
             t.left = l
             t.right = r
+            t.up = up
         else: #Primitivas que utilizam apenas 1 valor
-            l = initialize(terminals, primitive_symbol)
-            l.up = t
+            l = initialize(terminals, primitive_symbol, up=t)
             t.left = l
+            t.up = up
     return t

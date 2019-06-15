@@ -47,7 +47,8 @@ class GA(object):
 
 
 	def crossover(self, idx1, idx2):
-		t1, t2 = copy.deepcopy(self.population[idx1]), copy.deepcopy(self.population[idx2])
+		t1 = copy.deepcopy(self.population[idx1])
+		t2 = copy.deepcopy(self.population[idx2])
 		
 		gene1 = self.select_node(t1)
 		while(gene1 is None):
@@ -138,8 +139,8 @@ class GA(object):
 			while len(new_population) < self.size:
 				for cromossome in self.new_cromossome(error):
 					new_population.append(cromossome)
-					
-			print('Generation {} of {} -- Best Fitness: {}   Mean Fitness: {}'.format(i, self.num_generations, error.min(), error.mean()))
+
+			print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error.min()))
 			if error.min() <= self.early_stop:
 				break
 			self.population = new_population

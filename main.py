@@ -3,11 +3,11 @@ from genetic import GA
 import numpy as np
 import random
 import time
+import sys
 
-#random.seed(time.time())
-random.seed(7)
+sys.setrecursionlimit(1000)
 
-#TODO: Verificar tamanho da arvore para não haver problemas com estouro da pilha do python
+random.seed(time.time())
 
 # f(x) = 2*x
 easy = {}
@@ -50,6 +50,6 @@ size = 20
 test = 'Easy'
 ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
 		num_generations=1000, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
-#ga.run()
-#print('\n\n\nBest Cromossome')
-#ga.bestCromossome.show()
+ga.run()
+print('\n\n\nBest Cromossome')
+ga.bestCromossome.show()

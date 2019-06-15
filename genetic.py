@@ -119,14 +119,12 @@ class GA(object):
 		elif method_ticket <= self.crossover_rate+self.mutation_rate: #Realiza Mutação
 			idx1 = np.random.randint(0, self.size)
 			return self.mutation(idx1)
-		else:#if self.status.sum() != self.size: #Realiza seleção de Cromossomos para a próxima geração
+		else: #Realiza seleção de Cromossomos para a próxima geração
 			while True:
 				idx1 = np.random.randint(0, self.size)
 				if self.roulette(error[idx1],error.sum()):# and self.status[idx1] == 0: #Cromossomo selecionado não pode estar na próxima geração
 					self.status[idx1] = 1
 					return [copy.deepcopy(self.population[idx1])]
-		#else:
-		#	return self.new_cromossome(error)
 
 	def run(self):
 		print('Genetic History Started!')
@@ -140,7 +138,7 @@ class GA(object):
 			while len(new_population) < self.size:
 				for cromossome in self.new_cromossome(error):
 					new_population.append(cromossome)
-			#os.system('cls' if os.name == 'nt' else 'clear')
+					
 			print('Generation {} of {} -- Best Fitness: {}   Mean Fitness: {}'.format(i, self.num_generations, error.min(), error.mean()))
 			if error.min() <= self.early_stop:
 				break

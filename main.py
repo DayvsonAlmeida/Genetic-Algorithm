@@ -4,15 +4,15 @@ import numpy as np
 import random
 import time
 
-random.seed(time.time())
-#random.seed(7)
+#random.seed(time.time())
+random.seed(7)
 
 #TODO: Verificar tamanho da arvore para não haver problemas com estouro da pilha do python
 
 # f(x) = 2*x
 easy = {}
 easy['x'] = {'a':np.array(np.arange(100), dtype='float64')}
-easy['y'] = easy['x']['a']*2
+easy['y'] = easy['x']['a']*3
 easy['terminal_symb'] = ['a']
 
 #Pythagorean Theorem
@@ -46,9 +46,10 @@ base = {'Easy': easy, 'Pythagorean Theorem':pythagorean_theorem,
 		"Einstein's Relativity": einstein_relativity}
 
 
-size = 50
-ga = GA(terminal_symb=base['Easy']['terminal_symb'], x=base['Easy']['x'], y=base['Easy']['y'], size=size,
-		num_generations=400, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
-ga.run()
-print('\n\n\nBest Cromossome')
-ga.bestCromossome.show()
+size = 20
+test = 'Easy'
+ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
+		num_generations=1000, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
+#ga.run()
+#print('\n\n\nBest Cromossome')
+#ga.bestCromossome.show()

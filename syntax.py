@@ -28,6 +28,14 @@ class SyntaxTree(object):
             self.left.show(index+1)
         if self.right is not None:
             self.right.show(index+1)
+    def size(self):
+        l, r = 0, 0
+        if self.left is not None:
+            l = self.left.size()
+        if self.right is not None:
+            r = self.right.size()
+        return l+r+1
+
 
 def soma(a,b):
     return a+b

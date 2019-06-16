@@ -15,6 +15,7 @@ class GA(object):
 
 		self.size = size
 		self.history_len = history_len
+		self.old_mutation_rate = mutation_rate
 		self.num_generations = num_generations
 		self.early_stop = early_stop
 		self.crossover_rate = crossover_rate
@@ -109,10 +110,12 @@ class GA(object):
 		std = None
 		if len(error_history) == self.history_len:
 			std = np.std(error_history)
+
 		if std is not None:
 			if std <= 0.1:
 				self.mutation_rate += 5E-5*(1-self.mutation_rate-self.crossover_rate)
-
+			else:
+				self.mutation_rate = self.old_mutation_rate
 		if method_ticket <= self.crossover_rate: #Realiza Crossover
 			status = False
 			idx1, idx2 = False, False
@@ -164,4 +167,4 @@ class GA(object):
 				break
 			self.population = new_population
 		duration = time.time() - started_time
-		print('Duration: {} seconds'.format(duration))
+		print('\nDuration: {} seconds'.format(duration))

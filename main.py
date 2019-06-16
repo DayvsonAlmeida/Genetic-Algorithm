@@ -64,7 +64,7 @@ base = {'Easy': easy, 'Pythagorean Theorem':pythagorean_theorem,
 
 
 size = 100
-num_generations = 2000
+num_generations = 5000
 test = 'Hard'
 ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
 		num_generations=num_generations, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)

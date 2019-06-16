@@ -143,6 +143,7 @@ class GA(object):
 		started_time = time.time()
 		print('Genetic History Started!')
 		error_history = []
+		curr_generation = 0
 		for i in range(self.num_generations):
 			error = self.fitness()
 			self.status = np.zeros((self.size), dtype=int)
@@ -161,6 +162,7 @@ class GA(object):
 				for cromossome in self.new_cromossome(error, error_history):
 					new_population.append(cromossome)
 
+			curr_generation = i
 			if i % int(self.num_generations*0.05)==0:
 				print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error_min))
 			if error.min() <= self.early_stop:
@@ -168,3 +170,4 @@ class GA(object):
 			self.population = new_population
 		duration = time.time() - started_time
 		print('\nDuration: {} seconds'.format(duration))
+		print('\n{} generations'.format(curr_generation))

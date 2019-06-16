@@ -1,13 +1,27 @@
 from utils import initialize
 from genetic import GA
 import numpy as np
+import argparse
 import random
 import time
 import sys
 
 sys.setrecursionlimit(2000)
-
 random.seed(time.time())
+parser = argparse.ArgumentParser()
+parser.add_argument('--mr', help='Mutation Rate')
+parser.add_argument('--cr', help='Crossover Rate')
+parser.add_argument('--size', help='Population Size')
+parser.add_argument('--ngen', help='Number of Generations')
+parser.add_argument('--base', help='Base de Teste [Easy, Medium, Hard, Newton, Einstein, Pythagorean]')
+args, unknown = parser.parse_known_args()
+#--mr --cr --size --ngen --base
+mutation_rate = float(args.mr)
+crossover_rate = float(args.cr)
+size = int(args.size)
+ngen = int(args.ngen)
+test = args.base
+
 
 # f(x) = 2*x
 easy = {}
@@ -57,17 +71,14 @@ newton_law['x'] = {'m1': 10*np.array(np.random.random(100), dtype='float64'),
 newton_law['y'] = (newton_law['x']['m1']*newton_law['x']['m2']*G)/(newton_law['x']['d']**2)
 newton_law['terminal_symb'] = ['m1','m2','d']
 
-base = {'Easy': easy, 'Pythagorean Theorem':pythagorean_theorem,
+base = {'Easy': easy, 'Pythagorean':pythagorean_theorem,
 		'Medium': medium, 'Hard': hard,
-		'Newton Law of Gravitation': newton_law,
-		"Einstein's Relativity": einstein_relativity}
+		'Newton': newton_law,
+		"Einstein": einstein_relativity}
 
 
-size = 100
-num_generations = 5000
-test = 'Hard'
 ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
-		num_generations=num_generations, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
+		num_generations=ngen, crossover_rate=crossover_rate, mutation_rate=mutation_rate, early_stop=0.1)
 ga.run()
 #print('\n\n\nBest Cromossome')
 #ga.bestCromossome.show()

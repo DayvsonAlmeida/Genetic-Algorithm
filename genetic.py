@@ -6,13 +6,14 @@ import sys
 import os
 
 class GA(object):
-	def __init__(self, terminal_symb, x, y, size, num_generations=400, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1):
+	def __init__(self, terminal_symb, x, y, size, num_generations=400, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1, history_len=20):
 		self.primitive_symbol = ['+','-','*','/','sqrt','^','log','sin','cos','tan']
 		self.terminal_symb = terminal_symb
 		self.x = x
 		self.y = y
 
 		self.size = size
+		self.history_len = history_len
 		self.num_generations = num_generations
 		self.early_stop = early_stop
 		self.crossover_rate = crossover_rate
@@ -102,8 +103,15 @@ class GA(object):
 			return True
 		return False
 
-	def new_cromossome(self, error):
+	def new_cromossome(self, error, error_history):
 		method_ticket = np.random.random() #Ticket do método sorteado
+		std = None
+		if len(error_history) == self.history_len:
+			std = np.std(error_history)
+		if std is not None:
+			if std <= 0.1:
+				self.mutation_rate += 0.05*(1-self.mutation_rate-self.crossover_rate)
+
 		if method_ticket <= self.crossover_rate: #Realiza Crossover
 			status = False
 			idx1, idx2 = False, False
@@ -129,19 +137,27 @@ class GA(object):
 
 	def run(self):
 		print('Genetic History Started!')
+		error_history = []
 		for i in range(self.num_generations):
 			error = self.fitness()
 			self.status = np.zeros((self.size), dtype=int)
 			new_population = []
 			best = np.argmin(error)
+			error_min = error.min()
+			if len(error_history) < self.history_len:
+				error_history.append(error_min)
+			else:
+				_ = error_history.pop(0)
+				error_history.append(error_min)
+
 			self.bestCromossome = self.population[best]
 			new_population.append(self.bestCromossome)
 			while len(new_population) < self.size:
-				for cromossome in self.new_cromossome(error):
+				for cromossome in self.new_cromossome(error, error_history):
 					new_population.append(cromossome)
 
 			if i % int(self.num_generations*0.05)==0:
-				print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error.min()))
+				print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error_min))
 			if error.min() <= self.early_stop:
 				break
 			self.population = new_population

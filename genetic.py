@@ -140,7 +140,8 @@ class GA(object):
 				for cromossome in self.new_cromossome(error):
 					new_population.append(cromossome)
 
-			print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error.min()))
+			if i % int(self.num_generations*0.05)==0:
+				print('Generation {} of {} -- Best Fitness: {}'.format(i, self.num_generations, error.min()))
 			if error.min() <= self.early_stop:
 				break
 			self.population = new_population

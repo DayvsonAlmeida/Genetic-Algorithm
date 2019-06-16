@@ -23,6 +23,9 @@ class GA(object):
 		self.population = [initialize(self.terminal_symb, self.primitive_symbol) for i in range(self.size)]
 		self.status = np.zeros((self.size,),  dtype=int) #Controladora se um cromossomo foi selecionado para a próxima geração
 		self.bestCromossome = None
+
+		self.loss_history = []
+		self.duration = None
 	def fitness(self):
 		outputs = [self.population[i].run(self.x) for i in range(self.size)]
 		error = [((outputs[i]-self.y)**2).mean() for i in range(self.size)]
@@ -150,6 +153,8 @@ class GA(object):
 			new_population = []
 			best = np.argmin(error)
 			error_min = error.min()
+			self.loss_history.append(error_min)
+
 			if len(error_history) < self.history_len:
 				error_history.append(error_min)
 			else:
@@ -169,5 +174,6 @@ class GA(object):
 				break
 			self.population = new_population
 		duration = time.time() - started_time
+		self.duration = duration
 		print('\nDuration: {} seconds'.format(duration))
 		print('\n{} generations'.format(curr_generation))

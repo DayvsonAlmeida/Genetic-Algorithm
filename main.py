@@ -1,4 +1,5 @@
 from utils import initialize
+from pandas import DataFrame
 from genetic import GA
 import numpy as np
 import argparse
@@ -13,9 +14,10 @@ parser.add_argument('--mr', help='Mutation Rate')
 parser.add_argument('--cr', help='Crossover Rate')
 parser.add_argument('--size', help='Population Size')
 parser.add_argument('--ngen', help='Number of Generations')
-parser.add_argument('--base', help='Base de Teste [Easy, Medium, Hard, Newton, Einstein, Pythagorean]')
+parser.add_argument('--base', help='Base de Teste [Easy, Middle, Hard, Newton, Einstein, Pythagorean]')
 args, unknown = parser.parse_known_args()
 #cls && python main.py --mr 0.05 --cr 0.8 --size 100 --ngen 5000 --base Easy
+#cr:[0.7, 0.75, 0.8] mr:[0.05, 0.1, 0.2] size:[10, 50, 100]
 mutation_rate = float(args.mr)
 crossover_rate = float(args.cr)
 size = int(args.size)
@@ -72,13 +74,26 @@ newton_law['y'] = (newton_law['x']['m1']*newton_law['x']['m2']*G)/(newton_law['x
 newton_law['terminal_symb'] = ['m1','m2','d']
 
 base = {'Easy': easy, 'Pythagorean':pythagorean_theorem,
-		'Medium': medium, 'Hard': hard,
+		'Middle': medium, 'Hard': hard,
 		'Newton': newton_law,
 		"Einstein": einstein_relativity}
 
-
-ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
-		num_generations=ngen, crossover_rate=crossover_rate, mutation_rate=mutation_rate, early_stop=0.1)
-ga.run()
-#print('\n\n\nBest Cromossome')
-#ga.bestCromossome.show()
+#cr:[0.7, 0.75, 0.8] mr:[0.05, 0.1, 0.2] size:[10, 50, 100]
+results = {}
+duration = {}
+ngen = 2000
+for test in ['Hard']:#,'Hard','Hard']:
+	for crossover_rate in [0.7, 0.8]:
+		for mutation_rate in [0.05]:#, 0.1, 0.2]:
+			for size in [10, 100]:
+				ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
+						num_generations=ngen, crossover_rate=crossover_rate, mutation_rate=mutation_rate, early_stop=0.1)
+				ga.run()
+				loss = ga.loss_history
+				loss = np.concatenate((loss, [loss[len(loss)-1] for i in range(ngen - len(loss))] ) )
+				results[test+'_cr_'+str(crossover_rate)+'_mr_'+str(mutation_rate)+'_size_'+str(size)] = loss
+				duration[test+'_cr_'+str(crossover_rate)+'_mr_'+str(mutation_rate)+'_size_'+str(size)] = [ga.duration]
+df = DataFrame(results)
+df.to_csv('Resultados Hard GA.csv', index=False, decimal=',', sep=';')
+df = DataFrame(duration)
+df.to_csv('Duração Hard GA.csv', index=False, decimal=',', sep=';')

@@ -8,7 +8,7 @@ def initialize(terminals, primitive_symbol, up=None):
     type = random.randint(1,4)
     if type == 1:
         type = 'constante'
-        value = float(random.randint(0,100))
+        value = np.float(random.randint(0,100))
         symbol = str(value)
     elif type == 2:
         type = 'terminal'

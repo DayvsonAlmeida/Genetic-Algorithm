@@ -49,7 +49,7 @@ class GA(object):
 	def crossover(self, idx1, idx2):
 		t1 = copy.deepcopy(self.population[idx1])
 		t2 = copy.deepcopy(self.population[idx2])
-		
+
 		gene1 = self.select_node(t1)
 		while(gene1 is None):
 			gene1 = self.select_node(t1)
@@ -97,11 +97,11 @@ class GA(object):
 
 	def roulette(self, fit, total_fit):
 		ticket = np.random.random() #Ticket sorteado
-		prob = fit/total_fit #Tickets do indivíduo
+		prob = 1-fit/total_fit #Tickets do indivíduo (quanto menor o fitness melhor)
 		if(ticket<=prob):
 			return True
 		return False
-	
+
 	def new_cromossome(self, error):
 		method_ticket = np.random.random() #Ticket do método sorteado
 		if method_ticket <= self.crossover_rate: #Realiza Crossover
@@ -115,7 +115,7 @@ class GA(object):
 			while status is False:
 				idx2 = np.random.randint(0, self.size)
 				status = self.roulette(error[idx2], error.sum())
-			
+
 			return self.crossover(idx1, idx2)
 		elif method_ticket <= self.crossover_rate+self.mutation_rate: #Realiza Mutação
 			idx1 = np.random.randint(0, self.size)

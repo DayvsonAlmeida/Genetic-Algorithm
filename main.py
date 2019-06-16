@@ -5,7 +5,7 @@ import random
 import time
 import sys
 
-sys.setrecursionlimit(1000)
+sys.setrecursionlimit(2000)
 
 random.seed(time.time())
 

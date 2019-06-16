@@ -26,15 +26,15 @@ medium['terminal_symb'] = ['x','y','z']
 # f(x,y,z) = sin(x)+sqrt(y)-tan(z+x)
 hard = {}
 hard['x'] = {'x':np.array(np.arange(100), dtype='float64'),
-				'y':np.array(np.random.randint(100)),#, dtype='float64'),
-				'z':np.array(np.random.randint(100))}#, dtype='float64')}
+				'y':np.array(np.random.randint(100), dtype='float64'),#, dtype='float64'),
+				'z':np.array(np.random.randint(100), dtype='float64')}#, dtype='float64')}
 hard['y'] = np.sin(hard['x']['x']) + hard['x']['y']**0.5 - np.tan(hard['x']['z'] + hard['x']['x'])
 hard['terminal_symb'] = ['x','y','z']
 
 #Pythagorean Theorem
 # c² = a²+b²
 pythagorean_theorem = {}
-pythagorean_theorem['x'] = {'a': np.random.randint(100, size=100),
+pythagorean_theorem['x'] = {'a': np.array(np.random.randint(100, size=100), dtype='float64'),
 							'b': np.array(np.arange(100), dtype='float64')}
 pythagorean_theorem['y'] = pythagorean_theorem['x']['a']**2 +pythagorean_theorem['x']['b']**2
 pythagorean_theorem['terminal_symb'] = ['a','b']
@@ -52,8 +52,8 @@ einstein_relativity['terminal_symb'] = ['m']
 G = 6.674*10E-11
 newton_law = {}
 newton_law['x'] = {'m1': 10*np.array(np.random.random(100), dtype='float64'),
-					'm2': np.random.randint(100, size=100),
-					'd': np.random.randint(100, size=100)+np.random.rand(100)+10E-11}
+					'm2': np.array(np.random.randint(100, size=100), dtype='float64'),
+					'd': np.array(np.random.randint(100, size=100)+np.random.rand(100)+10E-11, dtype='float64')}
 newton_law['y'] = (newton_law['x']['m1']*newton_law['x']['m2']*G)/(newton_law['x']['d']**2)
 newton_law['terminal_symb'] = ['m1','m2','d']
 
@@ -63,10 +63,11 @@ base = {'Easy': easy, 'Pythagorean Theorem':pythagorean_theorem,
 		"Einstein's Relativity": einstein_relativity}
 
 
-size = 20
+size = 100
+num_generations = 2000
 test = 'Hard'
 ga = GA(terminal_symb=base[test]['terminal_symb'], x=base[test]['x'], y=base[test]['y'], size=size,
-		num_generations=2000, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
+		num_generations=num_generations, crossover_rate=0.7, mutation_rate=0.05, early_stop=0.1)
 ga.run()
 #print('\n\n\nBest Cromossome')
 #ga.bestCromossome.show()

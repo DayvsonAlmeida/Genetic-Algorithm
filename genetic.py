@@ -2,6 +2,7 @@ from utils import initialize
 import numpy as np
 import random
 import copy
+import time
 import sys
 import os
 
@@ -110,7 +111,7 @@ class GA(object):
 			std = np.std(error_history)
 		if std is not None:
 			if std <= 0.1:
-				self.mutation_rate += 0.05*(1-self.mutation_rate-self.crossover_rate)
+				self.mutation_rate += 5E-5*(1-self.mutation_rate-self.crossover_rate)
 
 		if method_ticket <= self.crossover_rate: #Realiza Crossover
 			status = False
@@ -136,6 +137,7 @@ class GA(object):
 					return [copy.deepcopy(self.population[idx1])]
 
 	def run(self):
+		started_time = time.time()
 		print('Genetic History Started!')
 		error_history = []
 		for i in range(self.num_generations):
@@ -161,3 +163,5 @@ class GA(object):
 			if error.min() <= self.early_stop:
 				break
 			self.population = new_population
+		duration = time.time() - started_time
+		print('Duration: {} seconds'.format(duration))

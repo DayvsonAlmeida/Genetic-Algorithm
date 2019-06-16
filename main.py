@@ -15,7 +15,7 @@ parser.add_argument('--size', help='Population Size')
 parser.add_argument('--ngen', help='Number of Generations')
 parser.add_argument('--base', help='Base de Teste [Easy, Medium, Hard, Newton, Einstein, Pythagorean]')
 args, unknown = parser.parse_known_args()
-#--mr --cr --size --ngen --base
+#cls && python main.py --mr 0.05 --cr 0.8 --size 100 --ngen 5000 --base Easy
 mutation_rate = float(args.mr)
 crossover_rate = float(args.cr)
 size = int(args.size)
